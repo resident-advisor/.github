@@ -1,8 +1,8 @@
-[//]: # 'Please update your PR to have a descriptive title rather than an auto-generated one, this makes it easier to read in git history and on Slack.'
+[//]: # 'Please update your PR to have a descriptive title rather than an auto-generated one, this makes it easier to read in git history and when linked to on other platforms.'
 
 ### Background :scroll:
 
-[//]: # "A short explanation of how these changes relate to the Shortcut story linked above and/or any other reasons for opening this PR. Please assume that readers don't have any background knowledge relating to your changes."
+[//]: # "A short explanation of how these changes relate to the linked story and/or any other reasons for opening this PR. Please assume that readers don't have any background knowledge relating to your changes."
 
 ### Changes :memo:
 
