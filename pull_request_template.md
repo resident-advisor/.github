@@ -20,3 +20,4 @@
 - [ ] Comments added for hard-to-understand areas of the code
 - [ ] Documentation updated (if appropriate)
 - [ ] Tests added for all new code (if possible)
+- [ ] Feature switches / experiments correctly configured in [Unleash](https://eu.app.unleash-hosted.com/eubb7016/projects/default)
