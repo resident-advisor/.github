@@ -21,3 +21,4 @@
 - [ ] Documentation updated (if appropriate)
 - [ ] Tests added for all new code (if possible)
 - [ ] Feature switches / experiments correctly configured in [Unleash](https://eu.app.unleash-hosted.com/eubb7016/projects/default)
+- [ ] Queries updated on [Nuclino](https://app.nuclino.com/Resident-Advisor/Engineering-Guidebook/-Start-Here-6766b3cf-7ad1-4f9b-a928-19552c18742b)
