@@ -18,4 +18,4 @@
 
 - [ ] Documentation updated (if appropriate)
 - [ ] Feature switches / experiments correctly configured in [Unleash](https://eu.app.unleash-hosted.com/eubb7016/projects/default)
-- [ ] Queries updated on [Nuclino](https://app.nuclino.com/Resident-Advisor/Engineering-Guidebook/-Start-Here-6766b3cf-7ad1-4f9b-a928-19552c18742b)
+- [ ] Queries updated on [Notion](https://www.notion.so/resident-advisor/Shared-Queries-Knowledge-Base-207202402415800e9846ccd0b8e4748a?source=copy_link)
