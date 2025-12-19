@@ -1,4 +1,4 @@
-[//]: # 'Please update your PR to have a descriptive title rather than an auto-generated one, this makes it easier to read in git history and when linked to on other platforms.'
+[//]: # "Please update your PR to have a descriptive title rather than an auto-generated one, this makes it easier to read in git history and when linked to on other platforms."
 
 ### Background :scroll:
 
@@ -14,11 +14,8 @@
 
 ### Checklist :white_check_mark:
 
-[//]: # 'These are just things that are easy to forget, not hoops to jump through. Not all of these will be applicable for every PR.'
+[//]: # "These are just things that are easy to forget, not hoops to jump through. Not all of these will be applicable for every PR."
 
-- [ ] Any dependent changes in other projects have been merged already
-- [ ] Comments added for hard-to-understand areas of the code
 - [ ] Documentation updated (if appropriate)
-- [ ] Tests added for all new code (if possible)
 - [ ] Feature switches / experiments correctly configured in [Unleash](https://eu.app.unleash-hosted.com/eubb7016/projects/default)
-- [ ] Queries updated on [Nuclino](https://app.nuclino.com/Resident-Advisor/Engineering-Guidebook/-Start-Here-6766b3cf-7ad1-4f9b-a928-19552c18742b)
+- [ ] Queries updated on [Notion](https://www.notion.so/resident-advisor/Shared-Queries-Knowledge-Base-207202402415800e9846ccd0b8e4748a?source=copy_link)
