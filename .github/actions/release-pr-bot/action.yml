@@ -1,0 +1,24 @@
+name: Release PR Bot
+description: Creates or updates a release PR from develop into main, listing unreleased PRs and auto-requesting reviews.
+
+inputs:
+  main_branch:
+    description: The branch to release into
+    default: main
+  develop_branch:
+    description: The branch containing unreleased changes
+    default: develop
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          const run = require(`${process.env.GITHUB_ACTION_PATH}/manage-release-pr.js`)
+          await run({
+            github,
+            context,
+            mainBranch: '${{ inputs.main_branch }}',
+            developBranch: '${{ inputs.develop_branch }}',
+          })
