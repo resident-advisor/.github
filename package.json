@@ -9,8 +9,8 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "eslint": "^9.0.0",
-    "globals": "^15.0.0",
+    "@resident-advisor/eslint-config": "*",
+    "eslint": "^8.0.0",
     "jest": "^29.0.0"
   }
 }
