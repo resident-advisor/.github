@@ -1,0 +1,42 @@
+name: Release PR Bot
+
+on:
+  workflow_call:
+    inputs:
+      main_branch:
+        default: 'main'
+        required: false
+        type: string
+      develop_branch:
+        default: 'develop'
+        required: false
+        type: string
+    secrets:
+      token:
+        required: true
+
+jobs:
+  manage-release-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/.github
+          path: _shared-workflows
+          token: ${{ secrets.token }}
+
+      - name: Manage Release PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = require('./_shared-workflows/.github/scripts/manage-release-pr.js')
+            await run({
+              github,
+              context,
+              mainBranch: '${{ inputs.main_branch }}',
+              developBranch: '${{ inputs.develop_branch }}',
+            })
