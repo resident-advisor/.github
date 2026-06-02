@@ -38,14 +38,14 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@main
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.0
 ```
 
 To use non-default branch names:
 
 ```yaml
     steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@main
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.0
         with:
           main_branch: master
           develop_branch: staging
@@ -57,3 +57,16 @@ To use non-default branch names:
 | ---------------- | --------- | ---------------------------- |
 | `main_branch`    | `main`    | The branch to release into   |
 | `develop_branch` | `develop` | The branch being released    |
+
+## Releasing New Action Versions
+
+Actions in this repo are versioned with git tags. Consumer repos pin to a specific tag (e.g. `@v1.0.0`) rather than `@main` for supply-chain safety.
+
+To cut a new release:
+
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+
+For breaking changes, bump the major version (`v2.0.0`) and update the usage example in this README. Consumer repos opt in by updating their `uses:` line.
