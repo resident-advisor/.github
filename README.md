@@ -41,7 +41,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@{commit SHA}
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@<commit-sha>
 ```
 
 To use non-default branch names:
