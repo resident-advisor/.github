@@ -166,7 +166,7 @@ async function createReleasePR({
   const { data: newPR } = await github.rest.pulls.create({
     owner,
     repo,
-    title: `🚀 Release — ${new Date().toISOString().slice(0, 10)}`,
+    title: `Release`,
     head: developBranch,
     base: mainBranch,
     body,
