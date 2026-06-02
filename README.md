@@ -48,7 +48,7 @@ To use non-default branch names:
 
 ```yaml
     steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@{commit SHA}
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@<commit-sha>
         with:
           main_branch: master
           develop_branch: staging
