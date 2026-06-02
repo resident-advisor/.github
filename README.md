@@ -41,6 +41,16 @@ jobs:
       - uses: resident-advisor/.github/.github/actions/release-pr-bot@main
 ```
 
+To use non-default branch names:
+
+```yaml
+    steps:
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@main
+        with:
+          main_branch: master
+          develop_branch: staging
+```
+
 #### Inputs
 
 | Input            | Default   | Description                  |
