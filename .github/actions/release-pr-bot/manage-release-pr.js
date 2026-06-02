@@ -84,17 +84,10 @@ async function fetchUnreleasedPRs({
     })
 
   const aheadSHAs = new Set(compareData.commits.map((c) => c.sha))
-  const oldestAheadCommitDate = compareData.commits.reduce((oldest, commit) => {
-    const commitDate = commit.commit?.committer?.date
-    if (!commitDate) {
-      return oldest
-    }
 
-    return !oldest || commitDate < oldest ? commitDate : oldest
-  }, null)
-
-  const mergedPRs = []
-  const mergedPRPages = github.paginate.iterator(github.rest.pulls.list, {
+  // Fetches all closed PRs on developBranch. On large/old repos this may be slow or
+  // hit rate limits — revisit with paginate.iterator + early-exit if it becomes a problem.
+  const mergedPRs = await github.paginate(github.rest.pulls.list, {
     owner,
     repo,
     state: 'closed',
@@ -102,23 +95,10 @@ async function fetchUnreleasedPRs({
     per_page: 100,
   })
 
-  for await (const { data: prs } of mergedPRPages) {
-    for (const pr of prs) {
-      if (pr.merged_at && pr.merge_commit_sha && aheadSHAs.has(pr.merge_commit_sha)) {
-        mergedPRs.push(pr)
-      }
-    }
-
-    if (
-      oldestAheadCommitDate &&
-      prs.length > 0 &&
-      prs.every((pr) => pr.merged_at && pr.merged_at < oldestAheadCommitDate)
-    ) {
-      break
-    }
-  }
-
-  return mergedPRs
+  return mergedPRs.filter(
+    (pr) =>
+      pr.merged_at && pr.merge_commit_sha && aheadSHAs.has(pr.merge_commit_sha),
+  )
 }
 
 function buildReviewers(prs) {

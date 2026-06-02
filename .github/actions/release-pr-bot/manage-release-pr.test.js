@@ -20,11 +20,7 @@ const makeGithub = ({
       requestReviewers: jest.fn().mockResolvedValue({}),
     },
   },
-  paginate: {
-    iterator: jest.fn().mockImplementation(async function* iterator() {
-      yield { data: mergedPRs }
-    }),
-  },
+  paginate: jest.fn().mockResolvedValue(mergedPRs),
 })
 
 const unreleasedPR = {
@@ -46,7 +42,6 @@ describe('manage-release-pr', () => {
 
     expect(github.rest.pulls.create).not.toHaveBeenCalled()
     expect(github.rest.pulls.update).not.toHaveBeenCalled()
-    expect(github.paginate.iterator).toHaveBeenCalled()
   })
 
   it('creates a new release PR when none exists', async () => {
