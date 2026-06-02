@@ -35,6 +35,7 @@ jobs:
   release-pr:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pull-requests: write
     steps:
       - uses: resident-advisor/.github/.github/actions/release-pr-bot@main
