@@ -22,7 +22,7 @@ Automatically creates or updates a release PR from `develop` → `main`. Each ti
 
 #### Usage
 
-Pin to a specific commit SHA for supply-chain safety — unlike branch or tag refs, a SHA is immutable.
+Pin to a specific commit SHA for supply-chain safety — branch and tag refs can be moved, but a commit SHA is immutable.
 You can find the latest commit sha in the commit history.
 
 ```yaml
