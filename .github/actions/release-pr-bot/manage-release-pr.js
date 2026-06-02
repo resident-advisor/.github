@@ -85,6 +85,8 @@ async function fetchUnreleasedPRs({
 
   const aheadSHAs = new Set(compareData.commits.map((c) => c.sha))
 
+  // Fetches all closed PRs on developBranch. On large/old repos this may be slow or
+  // hit rate limits — revisit with paginate.iterator + early-exit if it becomes a problem.
   const mergedPRs = await github.paginate(github.rest.pulls.list, {
     owner,
     repo,
