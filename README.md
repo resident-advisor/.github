@@ -22,6 +22,9 @@ Automatically creates or updates a release PR from `develop` → `main`. Each ti
 
 #### Usage
 
+Pin to a specific commit SHA for supply-chain safety — unlike branch or tag refs, a SHA is immutable.
+You can find the latest commit sha in the commit history.
+
 ```yaml
 # .github/workflows/release-pr.yml
 name: Release PR
@@ -38,14 +41,14 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.0
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@{commit SHA}
 ```
 
 To use non-default branch names:
 
 ```yaml
     steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.0
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@{commit SHA}
         with:
           main_branch: master
           develop_branch: staging
@@ -57,16 +60,3 @@ To use non-default branch names:
 | ---------------- | --------- | ---------------------------- |
 | `main_branch`    | `main`    | The branch to release into   |
 | `develop_branch` | `develop` | The branch being released    |
-
-## Releasing New Action Versions
-
-Actions in this repo are versioned with git tags. Consumer repos pin to a specific tag (e.g. `@v1.0.0`) rather than `@main` for supply-chain safety.
-
-To cut a new release:
-
-```bash
-git tag v1.1.0
-git push origin v1.1.0
-```
-
-For breaking changes, bump the major version (`v2.0.0`) and update the usage example in this README. Consumer repos opt in by updating their `uses:` line.
