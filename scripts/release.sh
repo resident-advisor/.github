@@ -62,7 +62,7 @@ read -r -p "Create and push tag '$VERSION', then open a draft release? [y/N] " c
 
 echo ""
 echo "→ Creating tag $VERSION..."
-git tag "$VERSION"
+git tag -a "$VERSION" -m "$VERSION"
 
 echo "→ Pushing tag to origin..."
 git push origin "$VERSION"
