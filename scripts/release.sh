@@ -43,8 +43,8 @@ if [[ "$CURRENT_BRANCH" != "main" ]]; then
   [[ "$confirm" =~ ^[Yy]$ ]] || exit 1
 fi
 
-if git rev-parse "$VERSION" &>/dev/null; then
-  echo "Error: tag '$VERSION' already exists."
+if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" &>/dev/null; then
+  echo "Error: tag '$VERSION' already exists on origin."
   exit 1
 fi
 
