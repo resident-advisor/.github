@@ -80,7 +80,7 @@ echo "✓ Done. Draft release created for $VERSION."
 echo ""
 echo "Next steps:"
 echo "  1. Open the draft release in GitHub and add your release notes."
-echo "  2. Click 'Publish release' — it will become immutable immediately."
+echo "  2. Click 'Publish release' — then treat the tag as immutable (and ensure tags are protected if you need enforcement)."
 echo ""
 
 # Open the release in the browser for convenience
