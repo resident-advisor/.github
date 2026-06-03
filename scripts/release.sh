@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ---------------------------------------------------------------------------
-# release.sh — create an immutable draft GitHub release
+# release.sh — create a version tag and draft GitHub release
 #
 # Usage: ./release.sh <version>
 #   e.g. ./release.sh v1.2.0
