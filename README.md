@@ -40,14 +40,14 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.0
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.1
 ```
 
 To use non-default branch names:
 
 ```yaml
     steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.0
+      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.1
         with:
           main_branch: master
           develop_branch: staging
