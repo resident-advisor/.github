@@ -136,8 +136,21 @@ async function updateReleasePR({ github, owner, repo, pr, body, reviewers }) {
       pull_number: pr.number,
     })
 
+  const { data: submittedReviews } = await github.rest.pulls.listReviews({
+    owner,
+    repo,
+    pull_number: pr.number,
+  })
+
   const currentLogins = new Set(currentReviews.users.map((u) => u.login))
-  const newReviewers = reviewers.filter((r) => !currentLogins.has(r))
+  const approvers = new Set(
+    submittedReviews
+      .filter((review) => review.state === 'APPROVED')
+      .map((review) => review.user?.login),
+  )
+  const newReviewers = reviewers.filter(
+    (r) => !currentLogins.has(r) && !approvers.has(r),
+  )
 
   if (newReviewers.length > 0) {
     await github.rest.pulls.requestReviewers({
