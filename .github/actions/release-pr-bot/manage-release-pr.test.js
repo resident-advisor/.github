@@ -94,13 +94,50 @@ describe('manage-release-pr', () => {
     expect(github.rest.pulls.requestReviewers).not.toHaveBeenCalled()
   })
 
-  it('does not re-request reviews from people who already approved', async () => {
+  it('does not re-request reviews from people who already approved the current commit', async () => {
     const github = makeGithub({
       commits: [{ sha: 'abc123' }],
       mergedPRs: [unreleasedPR],
-      openPRs: [{ number: 42 }],
+      openPRs: [{ number: 42, head: { sha: 'head-sha-1' } }],
       currentReviewers: [],
-      submittedReviews: [{ user: { login: 'alice' }, state: 'APPROVED' }],
+      submittedReviews: [
+        { user: { login: 'alice' }, state: 'APPROVED', commit_id: 'head-sha-1' },
+      ],
+    })
+
+    await run({ github, context: makeContext() })
+
+    expect(github.rest.pulls.requestReviewers).not.toHaveBeenCalled()
+  })
+
+  it('re-requests review from someone who approved a stale commit', async () => {
+    const github = makeGithub({
+      commits: [{ sha: 'abc123' }],
+      mergedPRs: [unreleasedPR],
+      openPRs: [{ number: 42, head: { sha: 'head-sha-2' } }],
+      currentReviewers: [],
+      submittedReviews: [
+        { user: { login: 'alice' }, state: 'APPROVED', commit_id: 'head-sha-1' },
+      ],
+    })
+
+    await run({ github, context: makeContext() })
+
+    expect(github.rest.pulls.requestReviewers).toHaveBeenCalledWith(
+      expect.objectContaining({ pull_number: 42, reviewers: ['alice'] }),
+    )
+  })
+
+  it('uses the latest review per person when they reviewed more than once', async () => {
+    const github = makeGithub({
+      commits: [{ sha: 'abc123' }],
+      mergedPRs: [unreleasedPR],
+      openPRs: [{ number: 42, head: { sha: 'head-sha-1' } }],
+      currentReviewers: [],
+      submittedReviews: [
+        { user: { login: 'alice' }, state: 'APPROVED', commit_id: 'stale-sha' },
+        { user: { login: 'alice' }, state: 'APPROVED', commit_id: 'head-sha-1' },
+      ],
     })
 
     await run({ github, context: makeContext() })

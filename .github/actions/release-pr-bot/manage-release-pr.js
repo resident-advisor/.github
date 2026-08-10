@@ -143,12 +143,23 @@ async function updateReleasePR({ github, owner, repo, pr, body, reviewers }) {
       }),
     ])
 
-  const excludedLogins = new Set([
-    ...currentReviews.users.map((u) => u.login),
-    ...submittedReviews
-      .filter((review) => review.state === 'APPROVED')
-      .map((review) => review.user?.login),
-  ])
+  const excludedLogins = new Set(currentReviews.users.map((u) => u.login))
+  const staleApprovers = new Set()
+
+  const latestReviewByLogin = new Map()
+  for (const review of submittedReviews) {
+    const login = review.user?.login
+    if (login) latestReviewByLogin.set(login, review)
+  }
+  for (const [login, review] of latestReviewByLogin) {
+    if (review.state !== 'APPROVED') continue
+    if (review.commit_id === pr.head.sha) {
+      excludedLogins.add(login)
+    } else {
+      staleApprovers.add(login)
+    }
+  }
+
   const newReviewers = reviewers.filter((r) => !excludedLogins.has(r))
 
   if (newReviewers.length > 0) {
@@ -158,6 +169,12 @@ async function updateReleasePR({ github, owner, repo, pr, body, reviewers }) {
       pull_number: pr.number,
       reviewers: newReviewers,
     })
+    const reRequested = newReviewers.filter((r) => staleApprovers.has(r))
+    if (reRequested.length > 0) {
+      console.log(
+        `Re-requested review from ${reRequested.join(', ')} (new commits since their approval)`,
+      )
+    }
     console.log(`Added reviewers: ${newReviewers.join(', ')}`)
   }
 
