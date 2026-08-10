@@ -7,6 +7,7 @@ const makeGithub = ({
   mergedPRs = [],
   openPRs = [],
   currentReviewers = [],
+  submittedReviews = [],
 } = {}) => ({
   rest: {
     repos: {
@@ -17,6 +18,7 @@ const makeGithub = ({
       create: jest.fn().mockResolvedValue({ data: { number: 99, html_url: 'https://github.com/test/pull/99' } }),
       update: jest.fn().mockResolvedValue({}),
       listRequestedReviewers: jest.fn().mockResolvedValue({ data: { users: currentReviewers } }),
+      listReviews: jest.fn().mockResolvedValue({ data: submittedReviews }),
       requestReviewers: jest.fn().mockResolvedValue({}),
     },
   },
@@ -85,6 +87,20 @@ describe('manage-release-pr', () => {
       mergedPRs: [unreleasedPR],
       openPRs: [{ number: 42 }],
       currentReviewers: [{ login: 'alice' }],
+    })
+
+    await run({ github, context: makeContext() })
+
+    expect(github.rest.pulls.requestReviewers).not.toHaveBeenCalled()
+  })
+
+  it('does not re-request reviews from people who already approved', async () => {
+    const github = makeGithub({
+      commits: [{ sha: 'abc123' }],
+      mergedPRs: [unreleasedPR],
+      openPRs: [{ number: 42 }],
+      currentReviewers: [],
+      submittedReviews: [{ user: { login: 'alice' }, state: 'APPROVED' }],
     })
 
     await run({ github, context: makeContext() })
