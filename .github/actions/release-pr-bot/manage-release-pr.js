@@ -146,19 +146,20 @@ async function updateReleasePR({ github, owner, repo, pr, body, reviewers }) {
   const excludedLogins = new Set(currentReviews.users.map((u) => u.login))
   const staleApprovers = new Set()
 
-  const latestReviewByLogin = new Map()
-  for (const review of submittedReviews) {
+  const latestReviewByLogin = submittedReviews.reduce((map, review) => {
     const login = review.user?.login
-    if (login) latestReviewByLogin.set(login, review)
-  }
-  for (const [login, review] of latestReviewByLogin) {
-    if (review.state !== 'APPROVED') continue
+    if (login) map.set(login, review)
+    return map
+  }, new Map())
+
+  Array.from(latestReviewByLogin.entries()).forEach(([login, review]) => {
+    if (review.state !== 'APPROVED') return
     if (review.commit_id === pr.head.sha) {
       excludedLogins.add(login)
     } else {
       staleApprovers.add(login)
     }
-  }
+  })
 
   const newReviewers = reviewers.filter((r) => !excludedLogins.has(r))
 
