@@ -145,6 +145,36 @@ describe('manage-release-pr', () => {
     expect(github.rest.pulls.requestReviewers).not.toHaveBeenCalled()
   })
 
+  it('re-requests review only from the person whose approval went stale after a new commit', async () => {
+    const bobPR = {
+      number: 2,
+      title: 'Add feature',
+      merged_at: '2024-01-02T00:00:00Z',
+      merge_commit_sha: 'def456',
+      user: { login: 'bob' },
+    }
+
+    const github = makeGithub({
+      commits: [{ sha: 'abc123' }, { sha: 'def456' }],
+      mergedPRs: [unreleasedPR, bobPR],
+      openPRs: [{ number: 42, head: { sha: 'head-sha-2' } }],
+      currentReviewers: [],
+      submittedReviews: [
+        // alice reviewed before her second commit landed - now stale
+        { user: { login: 'alice' }, state: 'APPROVED', commit_id: 'head-sha-1' },
+        // bob reviewed after that commit landed - still current
+        { user: { login: 'bob' }, state: 'APPROVED', commit_id: 'head-sha-2' },
+      ],
+    })
+
+    await run({ github, context: makeContext() })
+
+    expect(github.rest.pulls.requestReviewers).toHaveBeenCalledTimes(1)
+    expect(github.rest.pulls.requestReviewers).toHaveBeenCalledWith(
+      expect.objectContaining({ pull_number: 42, reviewers: ['alice'] }),
+    )
+  })
+
   it('excludes bots from reviewers', async () => {
     const github = makeGithub({
       commits: [{ sha: 'abc123' }],
