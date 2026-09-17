@@ -101,17 +101,25 @@ async function fetchUnreleasedPRs({
   )
 }
 
+function involvedLogins(pr) {
+  const logins = [pr.user?.login, ...(pr.assignees ?? []).map((a) => a?.login)]
+  return [...new Set(logins.filter(Boolean))]
+}
+
 function buildReviewers(prs) {
   const logins = prs
-    .map((pr) => pr.user?.login)
-    .filter((login) => login && !login.includes('[bot]'))
+    .flatMap(involvedLogins)
+    .filter((login) => !login.includes('[bot]'))
   return [...new Set(logins)]
 }
 
 function buildBody(prs, mainBranch, developBranch) {
-  const prLines = prs.map(
-    (pr) => `- #${pr.number} — ${pr.title} (@${pr.user?.login})`,
-  )
+  const prLines = prs.map((pr) => {
+    const mentions = involvedLogins(pr)
+      .map((login) => `@${login}`)
+      .join(', ')
+    return `- #${pr.number} — ${pr.title} (${mentions})`
+  })
   return [
     '## 🚀 Release PR',
     '',

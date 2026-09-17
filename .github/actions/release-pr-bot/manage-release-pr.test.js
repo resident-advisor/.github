@@ -120,4 +120,52 @@ describe('manage-release-pr', () => {
     expect(github.rest.pulls.create).toHaveBeenCalled()
     expect(github.rest.pulls.requestReviewers).not.toHaveBeenCalled()
   })
+
+  it('includes assignees of PRs as reviewers and mentions', async () => {
+    const github = makeGithub({
+      commits: [{ sha: 'abc123' }],
+      mergedPRs: [
+        {
+          ...unreleasedPR,
+          user: { login: 'gateway-bot[bot]' },
+          assignees: [{ login: 'bob' }],
+        },
+      ],
+      openPRs: [],
+    })
+
+    await run({ github, context: makeContext() })
+
+    expect(github.rest.pulls.requestReviewers).toHaveBeenCalledWith(
+      expect.objectContaining({ reviewers: ['bob'] }),
+    )
+    expect(github.rest.pulls.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: expect.stringContaining('(@gateway-bot[bot], @bob)'),
+      }),
+    )
+  })
+
+  it('deduplicates authors and assignees across PRs', async () => {
+    const github = makeGithub({
+      commits: [{ sha: 'abc123' }, { sha: 'def456' }],
+      mergedPRs: [
+        { ...unreleasedPR, assignees: [{ login: 'alice' }] },
+        {
+          ...unreleasedPR,
+          number: 2,
+          merge_commit_sha: 'def456',
+          user: { login: 'gateway-bot[bot]' },
+          assignees: [{ login: 'alice' }],
+        },
+      ],
+      openPRs: [],
+    })
+
+    await run({ github, context: makeContext() })
+
+    expect(github.rest.pulls.requestReviewers).toHaveBeenCalledWith(
+      expect.objectContaining({ reviewers: ['alice'] }),
+    )
+  })
 })
