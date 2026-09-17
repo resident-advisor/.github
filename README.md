@@ -2,7 +2,6 @@
 
 [ra.co](https://ra.co)
 
-
 This repo is used to house our organisation-wide health files, which can include `CONTRIBUTING`, `SUPPORT`, `CODE_OF_CONDUCT`, `ISSUE_TEMPLATE`(S), or `PULL_REQUEST_TEMPLATE`(S). If another organisation repo doesn't include one of these files, it will fallback to the one found in this repo.
 
 See [here](https://github.blog/changelog/2019-02-21-organization-wide-community-health-files/) for more info.
@@ -16,8 +15,8 @@ This repo houses reusable GitHub Actions that any repo in the organisation can r
 Automatically creates or updates a release PR from `develop` → `main`. Each time it runs, it:
 
 - Finds all merged PRs on `develop` not yet in `main`
-- Builds a PR body listing each one with author
-- Auto-requests reviews from the authors of those PRs
+- Builds a PR body listing each one with its author and assignees
+- Auto-requests reviews from those authors and assignees
 - Updates the PR body and adds any new reviewers if the release PR already exists
 
 #### Usage
@@ -46,19 +45,19 @@ jobs:
 To use non-default branch names:
 
 ```yaml
-    steps:
-      - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.1
-        with:
-          main_branch: master
-          develop_branch: staging
+steps:
+  - uses: resident-advisor/.github/.github/actions/release-pr-bot@v1.0.1
+    with:
+      main_branch: master
+      develop_branch: staging
 ```
 
 #### Inputs
 
-| Input            | Default   | Description                  |
-| ---------------- | --------- | ---------------------------- |
-| `main_branch`    | `main`    | The branch to release into   |
-| `develop_branch` | `develop` | The branch being released    |
+| Input            | Default   | Description                |
+| ---------------- | --------- | -------------------------- |
+| `main_branch`    | `main`    | The branch to release into |
+| `develop_branch` | `develop` | The branch being released  |
 
 ## Releasing New Action Versions
 
