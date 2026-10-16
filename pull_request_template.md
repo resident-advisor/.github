@@ -1,7 +1,5 @@
 [//]: # "Please update your PR to have a descriptive title rather than an auto-generated one, this makes it easier to read in git history and when linked to on other platforms."
 
-[//]: # "Remember to add a risk label to your PR. See [here](https://app.notion.com/p/resident-advisor/Code-review-guidelines-3dc202402415808a9495ec7de3e64503) for guidelines."
-
 ### Background :scroll:
 
 [//]: # "A short explanation of how these changes relate to the linked story and/or any other reasons for opening this PR. Please assume that readers don't have any background knowledge relating to your changes."
@@ -21,3 +19,4 @@
 - [ ] Documentation updated (if appropriate)
 - [ ] Feature switches / experiments correctly configured in [Unleash](https://eu.app.unleash-hosted.com/eubb7016/projects/default)
 - [ ] Queries updated on [Notion](https://www.notion.so/resident-advisor/Shared-Queries-Knowledge-Base-207202402415800e9846ccd0b8e4748a?source=copy_link)
+- [ ] [Risk label](https://app.notion.com/p/resident-advisor/Code-review-guidelines-3dc202402415808a9495ec7de3e64503) added to PR
