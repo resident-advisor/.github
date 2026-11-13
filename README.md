@@ -59,6 +59,19 @@ steps:
 | `main_branch`    | `main`    | The branch to release into |
 | `develop_branch` | `develop` | The branch being released  |
 
+## Ruleset Workflows
+
+### Story ID
+
+[`story-id.yml`](.github/workflows/story-id.yml) fails a PR unless its branch name or title contains an EPD id (e.g. `EPD-1234`). It passes without one for:
+
+- PRs with the `chore` label
+- PRs opened by bots
+- Reverts
+- Release and back-merge PRs (head branch `develop`, `main`, `master` or `release/*`)
+
+It is required on every repo through an organisation ruleset (Require workflows to pass before merging). Ruleset workflows only run when a PR is opened, reopened or pushed to, so after adding the `chore` label or editing the title, re-run the check.
+
 ## Releasing New Action Versions
 
 Releases are created using `scripts/release.sh`, which tags the current commit and opens a draft GitHub release. Publishing the release makes the tag immutable.

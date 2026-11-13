@@ -1,0 +1,37 @@
+name: Story ID
+
+on:
+  pull_request:
+
+permissions:
+  pull-requests: read
+
+jobs:
+  story-id:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check story id
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Ruleset workflows ignore label and title edits, so a re-run must read the live PR
+            // rather than the original event payload.
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            const branch = pr.head.ref;
+            const title = pr.title;
+
+            const hasStoryId = /\bEPD-\d+\b/i.test(`${branch} ${title}`);
+            const isChore = pr.labels.some(({ name }) => name === 'chore');
+            const isBot = pr.user.type === 'Bot';
+            const isRevert = branch.startsWith('revert-') || title.includes('Revert "');
+            const isRelease = ['develop', 'main', 'master'].includes(branch) || branch.startsWith('release/');
+
+            if (!hasStoryId && !isChore && !isBot && !isRevert && !isRelease) {
+              core.setFailed(
+                'No story id found. Add an EPD id (e.g. EPD-1234) to the branch name or PR title, ' +
+                'or add the "chore" label if there is no story, then re-run this check.'
+              );
+            }
