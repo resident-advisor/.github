@@ -27,6 +27,7 @@ describe('story-id', () => {
     ['story id in branch', { branch: 'feature/EPD-123-thing' }],
     ['story id in title', { title: 'EPD-123: Add thing' }],
     ['lowercase story id', { branch: 'epd-123-thing' }],
+    ['story id next to underscores', { branch: 'feature_EPD-123_thing' }],
     ['chore label', { labels: ['chore'] }],
     ['bot author', { userType: 'Bot' }],
     ['revert branch', { branch: 'revert-42-feature' }],

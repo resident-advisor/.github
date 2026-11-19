@@ -23,7 +23,7 @@ jobs:
             const branch = pr.head.ref;
             const title = pr.title;
 
-            const hasStoryId = /\bEPD-\d+\b/i.test(`${branch} ${title}`);
+            const hasStoryId = /(?<![a-z0-9])EPD-\d+/i.test(`${branch} ${title}`);
             const isChore = pr.labels.some(({ name }) => name === 'chore');
             const isBot = pr.user.type === 'Bot';
             const isRevert = branch.startsWith('revert-') || title.includes('Revert "');
