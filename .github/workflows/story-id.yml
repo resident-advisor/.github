@@ -1,0 +1,26 @@
+name: Story ID
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  story-id:
+    runs-on: ubuntu-latest
+    steps:
+      # Ruleset workflows run in the PR's repo, so fetch the script from the repo and commit this workflow came from.
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ job.workflow_repository }}
+          ref: ${{ job.workflow_sha }}
+          sparse-checkout: .github/workflows/story-id.js
+          sparse-checkout-cone-mode: false
+      - name: Check story id
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = require(`${process.env.GITHUB_WORKSPACE}/.github/workflows/story-id.js`)
+            await run({ github, context, core })
