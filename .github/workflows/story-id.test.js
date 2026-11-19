@@ -1,10 +1,4 @@
-const fs = require('fs')
-const path = require('path')
-const yaml = require('js-yaml')
-
-const workflow = yaml.load(fs.readFileSync(path.join(__dirname, 'story-id.yml'), 'utf8'))
-const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor
-const script = new AsyncFunction('github', 'context', 'core', workflow.jobs['story-id'].steps[0].with.script)
+const checkStoryId = require('./story-id')
 
 const run = async ({ branch = 'feature', title = 'Add thing', labels = [], userType = 'User' } = {}) => {
   const github = {
@@ -18,7 +12,7 @@ const run = async ({ branch = 'feature', title = 'Add thing', labels = [], userT
   }
   const context = { repo: { owner: 'o', repo: 'r' }, payload: { pull_request: { number: 1, title: 'stale' } } }
   const core = { setFailed: jest.fn() }
-  await script(github, context, core)
+  await checkStoryId({ github, context, core })
   return core.setFailed
 }
 
