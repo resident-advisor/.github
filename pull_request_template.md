@@ -20,4 +20,4 @@
 - [ ] Feature switches / experiments correctly configured in [Unleash](https://eu.app.unleash-hosted.com/eubb7016/projects/default)
 - [ ] Queries updated on [Notion](https://www.notion.so/resident-advisor/Shared-Queries-Knowledge-Base-207202402415800e9846ccd0b8e4748a?source=copy_link)
 - [ ] [Risk label](https://app.notion.com/p/resident-advisor/Code-review-guidelines-3dc202402415808a9495ec7de3e64503) added to PR
-- [ ] Story id (e.g. EPD-1234) in the branch or title, or `chore` label added (then click Re-run on the Story ID check)
+- [ ] Story ID (e.g. EPD-1234) in the branch name or PR title, or `chore` label added. After editing the title or label, click Re-run on the Story ID check
